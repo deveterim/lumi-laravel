@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Tests;
+namespace Lumi\Laravel\Tests;
 
-use Mailifica\Laravel\Notifications\Messages\MailificaMessage;
+use Lumi\Laravel\Notifications\Messages\LumiMessage;
 use PHPUnit\Framework\TestCase;
 
-class MailificaMessageTest extends TestCase
+class LumiMessageTest extends TestCase
 {
     public function testMessageFluentBuilder(): void
     {
-        $msg = MailificaMessage::create('Important Account Update')
+        $msg = LumiMessage::create('Important Account Update')
             ->from('notifications@mailifica.com')
             ->to('user@example.com')
             ->html('<p>Your account has been updated.</p>')

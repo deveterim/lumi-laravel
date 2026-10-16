@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Http\Controllers;
+namespace Lumi\Laravel\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Mailifica\Laravel\Client\MailificaClient;
-use Mailifica\Laravel\Events\MailificaWebhookReceived;
-use Mailifica\Laravel\Exceptions\WebhookVerificationException;
+use Lumi\Laravel\Client\LumiClient;
+use Lumi\Laravel\Events\LumiWebhookReceived;
+use Lumi\Laravel\Exceptions\WebhookVerificationException;
 
-class MailificaWebhookController extends Controller
+class LumiWebhookController extends Controller
 {
-    protected MailificaClient $client;
+    protected LumiClient $client;
 
-    public function __construct(MailificaClient $client)
+    public function __construct(LumiClient $client)
     {
         $this->client = $client;
     }
@@ -23,7 +23,7 @@ class MailificaWebhookController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         $secret = config('mailifica.webhook.secret');
-        $signatureHeader = $request->header('Mailifica-Signature') ?: $request->header('X-Mailifica-Signature');
+        $signatureHeader = $request->header('Lumi-Signature') ?: $request->header('X-Lumi-Signature');
 
         if (!empty($secret)) {
             if (empty($signatureHeader)) {
@@ -43,7 +43,7 @@ class MailificaWebhookController extends Controller
         $payload = $request->json()->all();
         $eventType = $payload['type'] ?? ($payload['event'] ?? 'unknown');
 
-        event(new MailificaWebhookReceived($eventType, $payload));
+        event(new LumiWebhookReceived($eventType, $payload));
 
         return response()->json(['status' => 'success', 'event' => $eventType]);
     }

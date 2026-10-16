@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Notifications\Messages;
+namespace Lumi\Laravel\Notifications\Messages;
 
-class MailificaMessage
+class LumiMessage
 {
     public ?string $from = null;
     public ?string $to = null;

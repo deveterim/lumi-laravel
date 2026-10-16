@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Tests;
+namespace Lumi\Laravel\Tests;
 
-use Mailifica\Laravel\Client\MailificaClient;
-use Mailifica\Laravel\Exceptions\WebhookVerificationException;
+use Lumi\Laravel\Client\LumiClient;
+use Lumi\Laravel\Exceptions\WebhookVerificationException;
 use PHPUnit\Framework\TestCase;
 
-class MailificaClientTest extends TestCase
+class LumiClientTest extends TestCase
 {
     public function testVerifyWebhookSignatureValid(): void
     {
-        $client = new MailificaClient('ma_test_key');
+        $client = new LumiClient('ma_test_key');
         $secret = 'whsec_test_secret_key_123';
         $payload = json_encode(['event' => 'email.delivered', 'id' => 'evt_123']);
         $timestamp = time();
@@ -28,7 +28,7 @@ class MailificaClientTest extends TestCase
     {
         $this->expectException(WebhookVerificationException::class);
 
-        $client = new MailificaClient('ma_test_key');
+        $client = new LumiClient('ma_test_key');
         $secret = 'whsec_test_secret_key_123';
         $payload = json_encode(['event' => 'email.bounced']);
         $header = "t=" . time() . ",v1=invalid_signature_hash";

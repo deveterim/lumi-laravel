@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Exceptions;
+namespace Lumi\Laravel\Exceptions;
 
 use Exception;
 
-class MailificaException extends Exception
+class LumiException extends Exception
 {
     protected ?int $statusCode;
     protected ?array $responseBody;

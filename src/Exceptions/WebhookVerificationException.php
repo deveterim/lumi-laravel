@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Exceptions;
+namespace Lumi\Laravel\Exceptions;
 
 use Exception;
 

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Client;
+namespace Lumi\Laravel\Client;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use Mailifica\Laravel\Exceptions\MailificaException;
-use Mailifica\Laravel\Exceptions\WebhookVerificationException;
+use Lumi\Laravel\Exceptions\LumiException;
+use Lumi\Laravel\Exceptions\WebhookVerificationException;
 
-class MailificaClient
+class LumiClient
 {
     public const VERSION = '1.0.1';
 
@@ -21,7 +21,7 @@ class MailificaClient
     public function __construct(string $apiKey, ?string $baseUrl = null, ?GuzzleClient $httpClient = null, float $timeout = 30.0)
     {
         $this->apiKey = $apiKey;
-        $this->baseUrl = rtrim($baseUrl ?: 'https://api.mailifica.com/v1', '/');
+        $this->baseUrl = rtrim($baseUrl ?: 'https://api.lumi.email/v1', '/');
         $this->httpClient = $httpClient ?: new GuzzleClient([
             'base_uri' => $this->baseUrl,
             'timeout'  => $timeout,
@@ -35,9 +35,9 @@ class MailificaClient
     }
 
     /**
-     * Send raw HTTP request to Mailifica API.
+     * Send raw HTTP request to Lumi API.
      *
-     * @throws MailificaException
+     * @throws LumiException
      */
     public function request(string $method, string $uri, array $options = []): array
     {
@@ -77,9 +77,9 @@ class MailificaClient
                 }
             }
 
-            throw new MailificaException($errorMessage, $statusCode, $responseBody, $e);
+            throw new LumiException($errorMessage, $statusCode, $responseBody, $e);
         } catch (GuzzleException $e) {
-            throw new MailificaException($e->getMessage(), 0, null, $e);
+            throw new LumiException($e->getMessage(), 0, null, $e);
         }
     }
 
@@ -205,7 +205,7 @@ class MailificaClient
     */
 
     /**
-     * Verify the HMAC-SHA256 signature of an incoming Mailifica webhook.
+     * Verify the HMAC-SHA256 signature of an incoming Lumi webhook.
      *
      * @throws WebhookVerificationException
      */

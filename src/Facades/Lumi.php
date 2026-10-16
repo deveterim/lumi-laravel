@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Facades;
+namespace Lumi\Laravel\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Mailifica\Laravel\Client\MailificaClient;
+use Lumi\Laravel\Client\LumiClient;
 
 /**
  * @method static array sendEmail(array $payload)
@@ -24,12 +24,12 @@ use Mailifica\Laravel\Client\MailificaClient;
  * @method static array deleteApiKey(string $id)
  * @method static bool verifyWebhookSignature(string $payload, string $header, string $secret, int $tolerance = 300)
  *
- * @see \Mailifica\Laravel\Client\MailificaClient
+ * @see \Lumi\Laravel\Client\LumiClient
  */
-class Mailifica extends Facade
+class Lumi extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return MailificaClient::class;
+        return LumiClient::class;
     }
 }

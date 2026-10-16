@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel;
+namespace Lumi\Laravel;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Mail\MailManager;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Mailifica\Laravel\Client\MailificaClient;
-use Mailifica\Laravel\Http\Controllers\MailificaWebhookController;
-use Mailifica\Laravel\Notifications\MailificaChannel;
-use Mailifica\Laravel\Transport\MailificaTransport;
+use Lumi\Laravel\Client\LumiClient;
+use Lumi\Laravel\Http\Controllers\LumiWebhookController;
+use Lumi\Laravel\Notifications\LumiChannel;
+use Lumi\Laravel\Transport\LumiTransport;
 
-class MailificaServiceProvider extends ServiceProvider
+class LumiServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -23,16 +23,16 @@ class MailificaServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/mailifica.php', 'mailifica');
 
-        $this->app->singleton(MailificaClient::class, function (Application $app) {
+        $this->app->singleton(LumiClient::class, function (Application $app) {
             $config = $app['config']->get('mailifica', []);
-            $apiKey = $config['api_key'] ?? (string) env('MAILIFICA_API_KEY', '');
-            $baseUrl = $config['base_url'] ?? (string) env('MAILIFICA_BASE_URL', 'https://api.mailifica.com/v1');
+            $apiKey = $config['api_key'] ?? (string) env('LUMI_API_KEY', '');
+            $baseUrl = $config['base_url'] ?? (string) env('LUMI_BASE_URL', 'https://api.lumi.email/v1');
             $timeout = (float) ($config['timeout'] ?? 30.0);
 
-            return new MailificaClient($apiKey, $baseUrl, null, $timeout);
+            return new LumiClient($apiKey, $baseUrl, null, $timeout);
         });
 
-        $this->app->alias(MailificaClient::class, 'mailifica');
+        $this->app->alias(LumiClient::class, 'mailifica');
     }
 
     /**
@@ -63,13 +63,13 @@ class MailificaServiceProvider extends ServiceProvider
     {
         $this->app->resolving('mail.manager', function (MailManager $mailManager) {
             $mailManager->extend('mailifica', function (array $config = []) {
-                $apiKey = $config['key'] ?? config('mailifica.api_key') ?? (string) env('MAILIFICA_API_KEY', '');
-                $baseUrl = $config['base_url'] ?? config('mailifica.base_url') ?? (string) env('MAILIFICA_BASE_URL', 'https://api.mailifica.com/v1');
+                $apiKey = $config['key'] ?? config('mailifica.api_key') ?? (string) env('LUMI_API_KEY', '');
+                $baseUrl = $config['base_url'] ?? config('mailifica.base_url') ?? (string) env('LUMI_BASE_URL', 'https://api.lumi.email/v1');
                 $timeout = (float) ($config['timeout'] ?? config('mailifica.timeout') ?? 30.0);
 
-                $client = new MailificaClient($apiKey, $baseUrl, null, $timeout);
+                $client = new LumiClient($apiKey, $baseUrl, null, $timeout);
 
-                return new MailificaTransport($client);
+                return new LumiTransport($client);
             });
         });
     }
@@ -81,7 +81,7 @@ class MailificaServiceProvider extends ServiceProvider
     {
         $this->app->resolving(ChannelManager::class, function (ChannelManager $channels) {
             $channels->extend('mailifica', function (Application $app) {
-                return new MailificaChannel($app->make(MailificaClient::class));
+                return new LumiChannel($app->make(LumiClient::class));
             });
         });
     }
@@ -93,7 +93,7 @@ class MailificaServiceProvider extends ServiceProvider
     {
         $path = config('mailifica.webhook.path');
         if (!empty($path)) {
-            Route::post($path, MailificaWebhookController::class)
+            Route::post($path, LumiWebhookController::class)
                 ->name('mailifica.webhook')
                 ->middleware('api');
         }

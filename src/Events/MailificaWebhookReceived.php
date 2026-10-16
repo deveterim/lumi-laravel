@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Events;
+namespace Lumi\Laravel\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MailificaWebhookReceived
+class LumiWebhookReceived
 {
     use Dispatchable, SerializesModels;
 

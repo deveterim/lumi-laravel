@@ -3,32 +3,32 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Mailifica API Key
+    | Lumi API Key
     |--------------------------------------------------------------------------
     |
-    | This key is used to authenticate requests to the Mailifica API.
-    | You can find your API key in the Mailifica Dashboard.
+    | This key is used to authenticate requests to the Lumi API.
+    | You can find your API key in the Lumi Dashboard.
     |
     */
-    'api_key' => env('MAILIFICA_API_KEY'),
+    'api_key' => env('LUMI_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------
-    | Mailifica Base URL
+    | Lumi Base URL
     |--------------------------------------------------------------------------
     |
-    | The base URL endpoint for the Mailifica API. Defaults to the official
+    | The base URL endpoint for the Lumi API. Defaults to the official
     | production API. Can be overridden for self-hosted instances or testing.
     |
     */
-    'base_url' => env('MAILIFICA_BASE_URL', 'https://api.mailifica.com/v1'),
+    'base_url' => env('LUMI_BASE_URL', 'https://api.lumi.email/v1'),
 
     /*
     |--------------------------------------------------------------------------
     | Request Timeout
     |--------------------------------------------------------------------------
     |
-    | The timeout in seconds for HTTP requests sent to Mailifica.
+    | The timeout in seconds for HTTP requests sent to Lumi.
     |
     */
     'timeout' => env('MAILIFICA_TIMEOUT', 30.0),
@@ -38,7 +38,7 @@ return [
     | Webhook Configuration
     |--------------------------------------------------------------------------
     |
-    | Settings for verifying and handling incoming webhooks from Mailifica.
+    | Settings for verifying and handling incoming webhooks from Lumi.
     |
     */
     'webhook' => [

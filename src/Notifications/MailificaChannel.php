@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Notifications;
+namespace Lumi\Laravel\Notifications;
 
 use Illuminate\Notifications\Notification;
-use Mailifica\Laravel\Client\MailificaClient;
-use Mailifica\Laravel\Notifications\Messages\MailificaMessage;
+use Lumi\Laravel\Client\LumiClient;
+use Lumi\Laravel\Notifications\Messages\LumiMessage;
 
-class MailificaChannel
+class LumiChannel
 {
-    protected MailificaClient $client;
+    protected LumiClient $client;
 
-    public function __construct(MailificaClient $client)
+    public function __construct(LumiClient $client)
     {
         $this->client = $client;
     }
@@ -22,16 +22,16 @@ class MailificaChannel
      */
     public function send(mixed $notifiable, Notification $notification): ?array
     {
-        if (!method_exists($notification, 'toMailifica')) {
+        if (!method_exists($notification, 'toLumi')) {
             return null;
         }
 
-        /** @var MailificaMessage|array $message */
-        $message = $notification->toMailifica($notifiable);
+        /** @var LumiMessage|array $message */
+        $message = $notification->toLumi($notifiable);
 
         if (is_array($message)) {
             $payload = $message;
-        } elseif ($message instanceof MailificaMessage) {
+        } elseif ($message instanceof LumiMessage) {
             $payload = $message->toArray();
         } else {
             return null;

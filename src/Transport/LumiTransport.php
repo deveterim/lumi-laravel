@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Mailifica\Laravel\Transport;
+namespace Lumi\Laravel\Transport;
 
-use Mailifica\Laravel\Client\MailificaClient;
-use Mailifica\Laravel\Exceptions\MailificaException;
+use Lumi\Laravel\Client\LumiClient;
+use Lumi\Laravel\Exceptions\LumiException;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
@@ -14,11 +14,11 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\MessageConverter;
 use Symfony\Component\Mime\RawMessage;
 
-class MailificaTransport extends AbstractTransport
+class LumiTransport extends AbstractTransport
 {
-    protected MailificaClient $client;
+    protected LumiClient $client;
 
-    public function __construct(MailificaClient $client)
+    public function __construct(LumiClient $client)
     {
         parent::__construct();
         $this->client = $client;
@@ -36,11 +36,11 @@ class MailificaTransport extends AbstractTransport
             
             $messageId = $response['id'] ?? ($response['data']['id'] ?? null);
             if ($messageId) {
-                $message->getOriginalMessage()->getHeaders()->addHeader('X-Mailifica-Message-ID', (string) $messageId);
+                $message->getOriginalMessage()->getHeaders()->addHeader('X-Lumi-Message-ID', (string) $messageId);
             }
-        } catch (MailificaException $e) {
+        } catch (LumiException $e) {
             throw new \Symfony\Component\Mailer\Exception\TransportException(
-                'Unable to send email via Mailifica: ' . $e->getMessage(),
+                'Unable to send email via Lumi: ' . $e->getMessage(),
                 $e->getStatusCode() ?? 0,
                 $e
             );
@@ -48,7 +48,7 @@ class MailificaTransport extends AbstractTransport
     }
 
     /**
-     * Build the Mailifica API JSON payload from Symfony Email.
+     * Build the Lumi API JSON payload from Symfony Email.
      */
     protected function buildPayload(Email $email, Envelope $envelope): array
     {
@@ -109,7 +109,7 @@ class MailificaTransport extends AbstractTransport
             $payload['attachments'] = $attachments;
         }
 
-        // Handle Custom Headers and Mailifica-specific Headers
+        // Handle Custom Headers and Lumi-specific Headers
         $headers = [];
         $tags = [];
         $metadata = [];
@@ -118,23 +118,23 @@ class MailificaTransport extends AbstractTransport
             $name = $header->getName();
             $body = $header->getBodyAsString();
 
-            if (strcasecmp($name, 'X-Mailifica-Tag') === 0 || strcasecmp($name, 'X-Tag') === 0) {
+            if (strcasecmp($name, 'X-Lumi-Tag') === 0 || strcasecmp($name, 'X-Tag') === 0) {
                 if (str_contains($body, '=')) {
                     [$tagName, $tagVal] = explode('=', $body, 2);
                     $tags[] = ['name' => trim($tagName), 'value' => trim($tagVal)];
                 } else {
                     $tags[] = ['name' => trim($body), 'value' => 'true'];
                 }
-            } elseif (strcasecmp($name, 'X-Mailifica-Scheduled-At') === 0) {
+            } elseif (strcasecmp($name, 'X-Lumi-Scheduled-At') === 0) {
                 $payload['scheduled_at'] = trim($body);
-            } elseif (strcasecmp($name, 'X-Mailifica-Template') === 0) {
+            } elseif (strcasecmp($name, 'X-Lumi-Template') === 0) {
                 $payload['template_id'] = trim($body);
-            } elseif (strcasecmp($name, 'X-Mailifica-Variables') === 0) {
+            } elseif (strcasecmp($name, 'X-Lumi-Variables') === 0) {
                 $decoded = json_decode($body, true);
                 if (is_array($decoded)) {
                     $payload['variables'] = $decoded;
                 }
-            } elseif (strcasecmp($name, 'X-Mailifica-Metadata') === 0) {
+            } elseif (strcasecmp($name, 'X-Lumi-Metadata') === 0) {
                 $decoded = json_decode($body, true);
                 if (is_array($decoded)) {
                     $metadata = array_merge($metadata, $decoded);
