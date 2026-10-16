@@ -39,7 +39,7 @@ class LumiChannel
 
         // Auto-assign recipient if not set explicitly
         if (empty($payload['to'])) {
-            if ($to = $notifiable->routeNotificationFor('mailifica', $notification)) {
+            if ($to = $notifiable->routeNotificationFor('lumi', $notification)) {
                 $payload['to'] = $to;
             } elseif ($to = $notifiable->routeNotificationFor('mail', $notification)) {
                 $payload['to'] = $to;

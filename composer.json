@@ -1,13 +1,13 @@
 {
     "name": "lumi/lumi-laravel",
-    "description": "Official Laravel Mail Transport Driver and SDK for Mailifica Email Infrastructure Platform",
-    "keywords": ["mailifica", "laravel", "mail", "mailer", "transport", "notifications", "resend", "email", "transactional"],
+    "description": "Official Laravel Mail Transport Driver and SDK for Lumi Email Infrastructure Platform",
+    "keywords": ["lumi", "laravel", "mail", "mailer", "transport", "notifications", "resend", "email", "transactional"],
     "homepage": "https://lumi.email",
     "license": "MIT",
     "authors": [
         {
-            "name": "Mailifica",
-            "email": "team@mailifica.com",
+            "name": "Lumi",
+            "email": "team@lumi.email",
             "homepage": "https://lumi.email"
         }
     ],
@@ -29,21 +29,21 @@
     },
     "autoload": {
         "psr-4": {
-            "Mailifica\\Laravel\\": "src/"
+            "Lumi\\Laravel\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Mailifica\\Laravel\\Tests\\": "tests/"
+            "Lumi\\Laravel\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Mailifica\\Laravel\\LumiServiceProvider"
+                "Lumi\\Laravel\\LumiServiceProvider"
             ],
             "aliases": {
-                "Mailifica": "Mailifica\\Laravel\\Facades\\Mailifica"
+                "Lumi": "Lumi\\Laravel\\Facades\\Lumi"
             }
         }
     },

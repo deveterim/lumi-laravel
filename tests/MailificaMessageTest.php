@@ -12,11 +12,11 @@ class LumiMessageTest extends TestCase
     public function testMessageFluentBuilder(): void
     {
         $msg = LumiMessage::create('Important Account Update')
-            ->from('notifications@mailifica.com')
+            ->from('notifications@lumi.com')
             ->to('user@example.com')
             ->html('<p>Your account has been updated.</p>')
             ->text('Your account has been updated.')
-            ->replyTo('support@mailifica.com')
+            ->replyTo('support@lumi.email')
             ->cc(['billing@example.com'])
             ->tag('env', 'production')
             ->metadata('user_id', 99)
@@ -24,7 +24,7 @@ class LumiMessageTest extends TestCase
 
         $array = $msg->toArray();
 
-        $this->assertEquals('notifications@mailifica.com', $array['from']);
+        $this->assertEquals('notifications@lumi.com', $array['from']);
         $this->assertEquals('user@example.com', $array['to']);
         $this->assertEquals('Important Account Update', $array['subject']);
         $this->assertEquals('<p>Your account has been updated.</p>', $array['html']);

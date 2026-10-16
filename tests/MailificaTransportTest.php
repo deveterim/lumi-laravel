@@ -20,11 +20,11 @@ class LumiTransportTest extends TestCase
         $mockClient->expects($this->once())
             ->method('sendEmail')
             ->with($this->callback(function (array $payload) {
-                return $payload['from'] === 'Lumi <sender@mailifica.com>'
+                return $payload['from'] === 'Lumi <sender@lumi.com>'
                     && $payload['to'] === 'receiver@example.com'
                     && $payload['subject'] === 'Welcome to Lumi'
                     && str_contains($payload['html'], '<h1>Welcome</h1>')
-                    && $payload['reply_to'] === 'support@mailifica.com'
+                    && $payload['reply_to'] === 'support@lumi.email'
                     && isset($payload['headers']['X-Custom-Header'])
                     && $payload['tags'][0]['name'] === 'category'
                     && $payload['tags'][0]['value'] === 'onboarding';
@@ -34,9 +34,9 @@ class LumiTransportTest extends TestCase
         $transport = new LumiTransport($mockClient);
 
         $email = (new Email())
-            ->from(new Address('sender@mailifica.com', 'Lumi'))
+            ->from(new Address('sender@lumi.com', 'Lumi'))
             ->to(new Address('receiver@example.com'))
-            ->replyTo(new Address('support@mailifica.com'))
+            ->replyTo(new Address('support@lumi.email'))
             ->subject('Welcome to Lumi')
             ->html('<h1>Welcome</h1>')
             ->text('Welcome');
@@ -48,6 +48,6 @@ class LumiTransportTest extends TestCase
         $sentMessage = new SentMessage($email, $envelope);
 
         $transport->send($email, $envelope);
-        $this->assertEquals('mailifica', (string) $transport);
+        $this->assertEquals('lumi', (string) $transport);
     }
 }

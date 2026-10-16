@@ -22,7 +22,7 @@ class LumiWebhookController extends Controller
 
     public function __invoke(Request $request): JsonResponse
     {
-        $secret = config('mailifica.webhook.secret');
+        $secret = config('lumi.webhook.secret');
         $signatureHeader = $request->header('Lumi-Signature') ?: $request->header('X-Lumi-Signature');
 
         if (!empty($secret)) {
@@ -31,7 +31,7 @@ class LumiWebhookController extends Controller
             }
 
             $rawPayload = $request->getContent();
-            $tolerance = (int) config('mailifica.webhook.tolerance', 300);
+            $tolerance = (int) config('lumi.webhook.tolerance', 300);
 
             try {
                 $this->client->verifyWebhookSignature($rawPayload, $signatureHeader, $secret, $tolerance);

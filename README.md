@@ -1,19 +1,19 @@
-# Mailifica Laravel Driver & SDK
+# Lumi Laravel Driver & SDK
 
-> Official Laravel integration for the **Mailifica** Transactional & Marketing Email Infrastructure.
+> Official Laravel integration for the **Lumi** Transactional & Marketing Email Infrastructure.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/mailifica/mailifica-laravel.svg?style=flat-square)](https://packagist.org/packages/mailifica/mailifica-laravel)
-[![Total Downloads](https://img.shields.io/packagist/dt/mailifica/mailifica-laravel.svg?style=flat-square)](https://packagist.org/packages/mailifica/mailifica-laravel)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/lumi/lumi-laravel.svg?style=flat-square)](https://packagist.org/packages/lumi/lumi-laravel)
+[![Total Downloads](https://img.shields.io/packagist/dt/lumi/lumi-laravel.svg?style=flat-square)](https://packagist.org/packages/lumi/lumi-laravel)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
 ---
 
 ## ⚡ Features
 
-- 🚀 **Native Laravel Mail Transport Driver**: Use `Mail::to()` or Mailables directly with Mailifica.
-- 🔔 **Laravel Notification Channel**: Send rich notifications via `MailificaChannel` and `MailificaMessage`.
-- 🪄 **Facade Support**: Full access to the REST API (`Mailifica::sendEmail()`, `Mailifica::listDomains()`, etc.).
-- 🛡️ **Secure Webhooks**: Automatic HMAC-SHA256 signature verification & event dispatching (`MailificaWebhookReceived`).
+- 🚀 **Native Laravel Mail Transport Driver**: Use `Mail::to()` or Mailables directly with Lumi.
+- 🔔 **Laravel Notification Channel**: Send rich notifications via `LumiChannel` and `LumiMessage`.
+- 🪄 **Facade Support**: Full access to the REST API (`Lumi::sendEmail()`, `Lumi::listDomains()`, etc.).
+- 🛡️ **Secure Webhooks**: Automatic HMAC-SHA256 signature verification & event dispatching (`LumiWebhookReceived`).
 - ⏱️ **Scheduled Sending & Metadata**: Native support for tags, metadata, scheduled delivery, and template rendering.
 - 🧩 **Laravel 10.x, 11.x, 12.x, and 13.x Ready**: Works out of the box with modern PHP (>= 8.1).
 
@@ -24,13 +24,13 @@
 Install the package via Composer:
 
 ```bash
-composer require mailifica/mailifica-laravel
+composer require lumi/lumi-laravel
 ```
 
 Publish the configuration file:
 
 ```bash
-php artisan vendor:publish --tag="mailifica-config"
+php artisan vendor:publish --tag="lumi-config"
 ```
 
 ---
@@ -39,25 +39,25 @@ php artisan vendor:publish --tag="mailifica-config"
 
 ### 1. Environment Variables (`.env`)
 
-Add your Mailifica credentials to your `.env` file:
+Add your Lumi credentials to your `.env` file:
 
 ```env
-MAIL_MAILER=mailifica
-MAILIFICA_API_KEY=ma_live_your_api_key_here
-MAILIFICA_BASE_URL=https://api.mailifica.com/v1
+MAIL_MAILER=lumi
+LUMI_API_KEY=ma_live_your_api_key_here
+LUMI_BASE_URL=https://api.lumi.email/v1
 
 # Optional Webhook Secret for signature verification
-MAILIFICA_WEBHOOK_SECRET=whsec_your_webhook_secret
+LUMI_WEBHOOK_SECRET=whsec_your_webhook_secret
 ```
 
 ### 2. Configure Mailer in `config/mail.php`
 
-In your `config/mail.php`, register the `mailifica` mailer:
+In your `config/mail.php`, register the `lumi` mailer:
 
 ```php
 'mailers' => [
-    'mailifica' => [
-        'transport' => 'mailifica',
+    'lumi' => [
+        'transport' => 'lumi',
     ],
     // ...
 ],
@@ -83,12 +83,12 @@ Or send raw emails:
 ```php
 use Illuminate\Support\Facades\Mail;
 
-Mail::raw('Hello from Mailifica!', function ($message) {
+Mail::raw('Hello from Lumi!', function ($message) {
     $message->to('user@example.com')
             ->from('notifications@yourdomain.com', 'Acme App')
             ->subject('Welcome to Acme!')
             ->getHeaders()
-            ->addTextHeader('X-Mailifica-Tag', 'category=welcome');
+            ->addTextHeader('X-Lumi-Tag', 'category=welcome');
 });
 ```
 
@@ -100,19 +100,19 @@ Mail::raw('Hello from Mailifica!', function ($message) {
 namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
-use Mailifica\Laravel\Notifications\MailificaChannel;
-use Mailifica\Laravel\Notifications\Messages\MailificaMessage;
+use Lumi\Laravel\Notifications\LumiChannel;
+use Lumi\Laravel\Notifications\Messages\LumiMessage;
 
 class InvoicePaidNotification extends Notification
 {
     public function via($notifiable): array
     {
-        return [MailificaChannel::class];
+        return [LumiChannel::class];
     }
 
-    public function toMailifica($notifiable): MailificaMessage
+    public function toLumi($notifiable): LumiMessage
     {
-        return MailificaMessage::create('Your Invoice Has Been Paid')
+        return LumiMessage::create('Your Invoice Has Been Paid')
             ->from('billing@yourdomain.com')
             ->html('<h1>Thank you for your payment!</h1><p>Invoice #1023 is settled.</p>')
             ->tag('category', 'invoices')
@@ -124,15 +124,15 @@ class InvoicePaidNotification extends Notification
 
 ---
 
-### 3. Using the Mailifica Facade
+### 3. Using the Lumi Facade
 
 Directly call the REST API from anywhere in your application:
 
 ```php
-use Mailifica\Laravel\Facades\Mailifica;
+use Lumi\Laravel\Facades\Lumi;
 
 // Send transactional email
-$response = Mailifica::sendEmail([
+$response = Lumi::sendEmail([
     'from' => 'Sender <hello@yourdomain.com>',
     'to' => 'receiver@example.com',
     'subject' => 'Verify your email address',
@@ -143,25 +143,25 @@ $response = Mailifica::sendEmail([
 ]);
 
 // List verified domains
-$domains = Mailifica::listDomains();
+$domains = Lumi::listDomains();
 
 // Retrieve email delivery status
-$email = Mailifica::getEmail('email_abc123');
+$email = Lumi::getEmail('email_abc123');
 ```
 
 ---
 
 ### 4. Handling Inbound Webhooks
 
-When a webhook arrives at the configured endpoint (default: `/mailifica/webhook`), `MailificaWebhookReceived` is automatically dispatched:
+When a webhook arrives at the configured endpoint (default: `/lumi/webhook`), `LumiWebhookReceived` is automatically dispatched:
 
 In `EventServiceProvider` (or `AppServiceProvider`):
 
 ```php
-use Mailifica\Laravel\Events\MailificaWebhookReceived;
+use Lumi\Laravel\Events\LumiWebhookReceived;
 use Illuminate\Support\Facades\Event;
 
-Event::listen(MailificaWebhookReceived::class, function (MailificaWebhookReceived $event) {
+Event::listen(LumiWebhookReceived::class, function (LumiWebhookReceived $event) {
     switch ($event->type) {
         case 'email.delivered':
             // $event->data contains email details

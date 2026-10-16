@@ -183,6 +183,6 @@ class LumiTransport extends AbstractTransport
 
     public function __toString(): string
     {
-        return 'mailifica';
+        return 'lumi';
     }
 }

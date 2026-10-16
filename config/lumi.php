@@ -31,7 +31,7 @@ return [
     | The timeout in seconds for HTTP requests sent to Lumi.
     |
     */
-    'timeout' => env('MAILIFICA_TIMEOUT', 30.0),
+    'timeout' => env('LUMI_TIMEOUT', 30.0),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,8 +42,8 @@ return [
     |
     */
     'webhook' => [
-        'secret' => env('MAILIFICA_WEBHOOK_SECRET'),
-        'path' => env('MAILIFICA_WEBHOOK_PATH', '/mailifica/webhook'),
-        'tolerance' => env('MAILIFICA_WEBHOOK_TOLERANCE', 300), // in seconds
+        'secret' => env('LUMI_WEBHOOK_SECRET'),
+        'path' => env('LUMI_WEBHOOK_PATH', '/lumi/webhook'),
+        'tolerance' => env('LUMI_WEBHOOK_TOLERANCE', 300), // in seconds
     ],
 ];

@@ -21,10 +21,10 @@ class LumiServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/mailifica.php', 'mailifica');
+        $this->mergeConfigFrom(__DIR__ . '/../config/lumi.php', 'lumi');
 
         $this->app->singleton(LumiClient::class, function (Application $app) {
-            $config = $app['config']->get('mailifica', []);
+            $config = $app['config']->get('lumi', []);
             $apiKey = $config['api_key'] ?? (string) env('LUMI_API_KEY', '');
             $baseUrl = $config['base_url'] ?? (string) env('LUMI_BASE_URL', 'https://api.lumi.email/v1');
             $timeout = (float) ($config['timeout'] ?? 30.0);
@@ -32,7 +32,7 @@ class LumiServiceProvider extends ServiceProvider
             return new LumiClient($apiKey, $baseUrl, null, $timeout);
         });
 
-        $this->app->alias(LumiClient::class, 'mailifica');
+        $this->app->alias(LumiClient::class, 'lumi');
     }
 
     /**
@@ -42,8 +42,8 @@ class LumiServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/mailifica.php' => $this->app->configPath('mailifica.php'),
-            ], 'mailifica-config');
+                __DIR__ . '/../config/lumi.php' => $this->app->configPath('lumi.php'),
+            ], 'lumi-config');
         }
 
         // Register custom mail transport driver
@@ -57,15 +57,15 @@ class LumiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the 'mailifica' transport driver in Laravel MailManager.
+     * Register the 'lumi' transport driver in Laravel MailManager.
      */
     protected function registerMailTransport(): void
     {
         $this->app->resolving('mail.manager', function (MailManager $mailManager) {
-            $mailManager->extend('mailifica', function (array $config = []) {
-                $apiKey = $config['key'] ?? config('mailifica.api_key') ?? (string) env('LUMI_API_KEY', '');
-                $baseUrl = $config['base_url'] ?? config('mailifica.base_url') ?? (string) env('LUMI_BASE_URL', 'https://api.lumi.email/v1');
-                $timeout = (float) ($config['timeout'] ?? config('mailifica.timeout') ?? 30.0);
+            $mailManager->extend('lumi', function (array $config = []) {
+                $apiKey = $config['key'] ?? config('lumi.api_key') ?? (string) env('LUMI_API_KEY', '');
+                $baseUrl = $config['base_url'] ?? config('lumi.base_url') ?? (string) env('LUMI_BASE_URL', 'https://api.lumi.email/v1');
+                $timeout = (float) ($config['timeout'] ?? config('lumi.timeout') ?? 30.0);
 
                 $client = new LumiClient($apiKey, $baseUrl, null, $timeout);
 
@@ -75,12 +75,12 @@ class LumiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the 'mailifica' notification channel.
+     * Register the 'lumi' notification channel.
      */
     protected function registerNotificationChannel(): void
     {
         $this->app->resolving(ChannelManager::class, function (ChannelManager $channels) {
-            $channels->extend('mailifica', function (Application $app) {
+            $channels->extend('lumi', function (Application $app) {
                 return new LumiChannel($app->make(LumiClient::class));
             });
         });
@@ -91,10 +91,10 @@ class LumiServiceProvider extends ServiceProvider
      */
     protected function registerWebhookRoute(): void
     {
-        $path = config('mailifica.webhook.path');
+        $path = config('lumi.webhook.path');
         if (!empty($path)) {
             Route::post($path, LumiWebhookController::class)
-                ->name('mailifica.webhook')
+                ->name('lumi.webhook')
                 ->middleware('api');
         }
     }

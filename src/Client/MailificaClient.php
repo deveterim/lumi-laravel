@@ -29,7 +29,7 @@ class LumiClient
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type'  => 'application/json',
                 'Accept'        => 'application/json',
-                'User-Agent'    => 'mailifica-laravel/' . self::VERSION,
+                'User-Agent'    => 'lumi-laravel/' . self::VERSION,
             ],
         ]);
     }
