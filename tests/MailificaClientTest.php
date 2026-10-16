@@ -12,7 +12,7 @@ class LumiClientTest extends TestCase
 {
     public function testVerifyWebhookSignatureValid(): void
     {
-        $client = new LumiClient('ma_test_key');
+        $client = new LumiClient('lu_test_key');
         $secret = 'whsec_test_secret_key_123';
         $payload = json_encode(['event' => 'email.delivered', 'id' => 'evt_123']);
         $timestamp = time();
@@ -28,7 +28,7 @@ class LumiClientTest extends TestCase
     {
         $this->expectException(WebhookVerificationException::class);
 
-        $client = new LumiClient('ma_test_key');
+        $client = new LumiClient('lu_test_key');
         $secret = 'whsec_test_secret_key_123';
         $payload = json_encode(['event' => 'email.bounced']);
         $header = "t=" . time() . ",v1=invalid_signature_hash";

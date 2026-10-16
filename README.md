@@ -43,7 +43,7 @@ Add your Lumi credentials to your `.env` file:
 
 ```env
 MAIL_MAILER=lumi
-LUMI_API_KEY=ma_live_your_api_key_here
+LUMI_API_KEY=lu_live_your_api_key_here
 LUMI_BASE_URL=https://api.lumi.email/v1
 
 # Optional Webhook Secret for signature verification
