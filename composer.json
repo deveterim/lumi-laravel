@@ -1,0 +1,57 @@
+{
+    "name": "mailifica/mailifica-laravel",
+    "description": "Official Laravel Mail Transport Driver and SDK for Mailifica Email Infrastructure Platform",
+    "keywords": ["mailifica", "laravel", "mail", "mailer", "transport", "notifications", "resend", "email", "transactional"],
+    "homepage": "https://mailifica.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mailifica",
+            "email": "team@mailifica.com",
+            "homepage": "https://mailifica.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.5",
+        "illuminate/contracts": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "illuminate/mail": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "illuminate/notifications": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "symfony/mailer": "^6.0 || ^7.0 || ^8.0",
+        "symfony/mime": "^6.0 || ^7.0 || ^8.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^8.0 || ^9.0 || ^10.0 || ^11.0",
+        "phpunit/phpunit": "^10.0 || ^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mailifica\\Laravel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mailifica\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mailifica\\Laravel\\MailificaServiceProvider"
+            ],
+            "aliases": {
+                "Mailifica": "Mailifica\\Laravel\\Facades\\Mailifica"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "support": {
+        "issues": "https://github.com/mailifica/mailifica-laravel/issues",
+        "source": "https://github.com/mailifica/mailifica-laravel",
+        "docs": "https://mailifica.com/docs"
+    }
+}
