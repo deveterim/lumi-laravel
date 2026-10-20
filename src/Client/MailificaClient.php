@@ -21,7 +21,7 @@ class LumiClient
     public function __construct(string $apiKey, ?string $baseUrl = null, ?GuzzleClient $httpClient = null, float $timeout = 30.0)
     {
         $this->apiKey = $apiKey;
-        $this->baseUrl = rtrim($baseUrl ?: 'https://api.lumi.email/v1', '/');
+        $this->baseUrl = rtrim($baseUrl ?: 'https://api.lumi.ao', '/');
         $this->httpClient = $httpClient ?: new GuzzleClient([
             'base_uri' => $this->baseUrl,
             'timeout'  => $timeout,
@@ -109,12 +109,12 @@ class LumiClient
             $payload['tags'] = $normalizedTags;
         }
 
-        return $this->request('POST', '/emails', ['json' => $payload]);
+        return $this->request('POST', '/api/v1/send', ['json' => $payload]);
     }
 
     public function getEmail(string $id): array
     {
-        return $this->request('GET', '/emails/' . $id);
+        return $this->request('GET', '/api/v1/send/' . $id);
     }
 
     public function listEmails(array $query = []): array

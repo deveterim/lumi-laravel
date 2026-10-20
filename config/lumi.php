@@ -21,7 +21,7 @@ return [
     | production API. Can be overridden for self-hosted instances or testing.
     |
     */
-    'base_url' => env('LUMI_BASE_URL', 'https://api.lumi.email/v1'),
+    'base_url' => env('LUMI_BASE_URL', 'https://api.lumi.ao'),
 
     /*
     |--------------------------------------------------------------------------
