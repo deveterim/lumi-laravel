@@ -50,8 +50,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "support": {
-        "issues": "https://github.com/lumi/lumi-laravel/issues",
-        "source": "https://github.com/lumi/lumi-laravel",
+        "issues": "https://github.com/deveterim/lumi-laravel/issues",
+        "source": "https://github.com/deveterim/lumi-laravel",
         "docs": "https://lumi.email/docs"
     }
 }
